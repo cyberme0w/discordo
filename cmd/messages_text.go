@@ -155,10 +155,11 @@ func (mt *MessagesText) onInputCapture(event *tcell.EventKey) *tcell.EventKey {
 		mt.deleteAction()
 		return nil
 	case cfg.Keys.Cancel:
-		mainFlex.guildsTree.selectedChannelID = 0
+    mt.selectNoneAction()
+    //mainFlex.guildsTree.selectedChannelID = 0
 
-		mainFlex.messagesText.reset()
-		mainFlex.messageInput.reset()
+		//mainFlex.messagesText.reset()
+		//mainFlex.messageInput.reset()
 		return nil
 	}
 
@@ -231,6 +232,14 @@ func (mt *MessagesText) selectNextAction() {
 
 	mt.Highlight(ms[mt.selectedMessage].ID.String())
 	mt.ScrollToHighlight()
+}
+
+func (mt *MessagesText) selectNoneAction() {
+  mt.selectedMessage = -1
+  mt.Highlight()
+  mt.ScrollToEnd()
+  // TODO: Maybe add option to config to make cancel key automatically open the message input?
+  //app.SetFocus(mainFlex.messageInput)
 }
 
 func (mt *MessagesText) selectFirstAction() {
