@@ -11,6 +11,8 @@ type MainFlex struct {
 	guildsTree   *GuildsTree
 	messagesText *MessagesText
 	messageInput *MessageInput
+
+	rightFlex *tview.Flex
 }
 
 func newMainFlex() *MainFlex {
@@ -33,8 +35,9 @@ func (mf *MainFlex) init() {
 
 	right := tview.NewFlex()
 	right.SetDirection(tview.FlexRow)
-	right.AddItem(mf.messagesText, 0, 1, false)
-	right.AddItem(mf.messageInput, 3, 1, false)
+	right.AddItem(mf.messagesText, 0, 10, false)
+	right.AddItem(mf.messageInput, 3, 0, false)
+	mf.rightFlex = right
 	// The guilds tree is always focused first at start-up.
 	mf.AddItem(mf.guildsTree, 0, 1, true)
 	mf.AddItem(right, 0, 4, false)

@@ -51,7 +51,18 @@ func (mi *MessageInput) reset() {
 	mi.SetText("", true)
 }
 
+func calcMessageInputHeight(text string) int {
+	return strings.Count(text, "\n") + 3
+}
+
+func resizeInputHeight(right tview.Flex, mi tview.TextArea) {
+  newHeight := calcMessageInputHeight(mi.GetText())
+  right.ResizeItem(mainFlex.messageInput, newHeight, 0)
+}
+
 func (mi *MessageInput) onInputCapture(event *tcell.EventKey) *tcell.EventKey {
+  mainFlex.rightFlex.ResizeItem(mi, calcMessageInputHeight(mi.GetText()), 0)
+
 	switch event.Name() {
 	case cfg.Keys.MessageInput.Send:
 		mi.sendAction()
