@@ -125,7 +125,16 @@ func (mt *MessagesText) createFooter(w io.Writer, m discord.Message) {
 func (mt *MessagesText) onInputCapture(event *tcell.EventKey) *tcell.EventKey {
 	switch event.Name() {
 	case cfg.Keys.MessagesText.CopyContent:
-		mt.copyContentAction()
+    popup = tview.NewModal().
+    		SetText("Do you want to quit the application?").
+		AddButtons([]string{"Quit", "Cancel"}).
+		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
+			if buttonLabel == "Quit" {
+				app.Stop()
+			}
+		})
+    pages.AddPage("popup", popup, true, true)
+		//mt.copyContentAction()
 		return nil
 	case cfg.Keys.MessagesText.Reply:
 		mt.replyAction(false)

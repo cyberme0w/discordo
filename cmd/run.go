@@ -15,6 +15,8 @@ var (
 	cfg      *config.Config
 	app      = tview.NewApplication()
 	mainFlex *MainFlex
+  popup    *tview.Modal
+  pages    *tview.Pages
 )
 
 func Run(token string) error {
@@ -34,6 +36,7 @@ func Run(token string) error {
 		go func() {
 			// mainFlex must be initialized before opening a new state.
 			mainFlex = newMainFlex()
+      pages = tview.NewPages().AddPage("mainFlex", mainFlex, true, true)
 
 			token := <-lf.Token
 			if token.Error != nil {
@@ -47,18 +50,19 @@ func Run(token string) error {
 			}
 
 			app.QueueUpdateDraw(func() {
-				app.SetRoot(mainFlex, true)
+				app.SetRoot(pages, true)
 			})
 		}()
 
 		app.SetRoot(lf, true)
 	} else {
 		mainFlex = newMainFlex()
+    pages = tview.NewPages().AddPage("mainFlex", mainFlex, true, true)
 		if err := openState(token); err != nil {
 			return err
 		}
 
-		app.SetRoot(mainFlex, true)
+		app.SetRoot(pages, true)
 	}
 
 	app.EnableMouse(cfg.Mouse)
